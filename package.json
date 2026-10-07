@@ -10,7 +10,8 @@
     "seed:laws": "node scripts/seed-laws.js",
     "laws:download": "node scripts/download-legal-sources.js",
     "laws:extract": "node scripts/extract-law-rules.js",
-    "laws:atomic": "node scripts/split-law-rules.js"
+    "laws:atomic": "node scripts/split-law-rules.js",
+    "laws:validate": "node scripts/validate-law-rules.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
