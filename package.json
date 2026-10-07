@@ -14,7 +14,8 @@
     "laws:validate": "node scripts/validate-law-rules.js",
     "laws:classify": "node scripts/classify-category-b.js",
     "laws:classify:v2": "node scripts/classify-category-b-v2.js",
-    "laws:classify:v3": "node scripts/classify-category-b-v3.js"
+    "laws:classify:v3": "node scripts/classify-category-b-v3.js",
+    "laws:exam-relevance": "node scripts/classify-exam-relevance.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
