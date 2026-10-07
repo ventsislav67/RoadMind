@@ -17,7 +17,8 @@
     "laws:classify:v3": "node scripts/classify-category-b-v3.js",
     "laws:exam-relevance": "node scripts/classify-exam-relevance.js",
     "laws:scope": "node scripts/classify-learner-scope-v4.js",
-    "laws:normalize:v5": "node scripts/normalize-legal-rules-v5.js"
+    "laws:normalize:v5": "node scripts/normalize-legal-rules-v5.js",
+    "laws:normalize:v5.1": "node scripts/normalize-legal-rules-v5_1.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
