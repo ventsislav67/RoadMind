@@ -27,7 +27,8 @@
     "laws:build:v6": "node scripts/build-production-dataset-v6.js",
     "firebase:seed:laws:v6": "node scripts/seed-production-laws-v6.js",
     "firebase:upload:demo": "node scripts/upload-demo-images.js",
-    "firebase:seed:demo": "node scripts/seed-demo-quiz.js"
+    "firebase:seed:demo": "node scripts/seed-demo-quiz.js",
+    "start:roadmind": "node server-demo.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
