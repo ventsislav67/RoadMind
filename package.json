@@ -2,14 +2,18 @@
   "name": "roadmind",
   "version": "0.1.0",
   "private": true,
-  "description": "RoadMind — intelligent web platform for category B driving theory preparation",
+  "description": "RoadMind - category B driving theory platform",
   "scripts": {
     "generate:images": "node scripts/generate-sign-images.js",
     "firebase:upload": "node scripts/upload-images.js",
-    "firebase:seed": "node scripts/seed-firestore.js"
+    "firebase:seed": "node scripts/seed-firestore.js",
+    "seed:laws": "node scripts/seed-laws.js",
+    "laws:download": "node scripts/download-legal-sources.js",
+    "laws:extract": "node scripts/extract-law-rules.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "firebase-admin": "^13.5.0"
+    "firebase-admin": "^13.5.0",
+    "pdf-parse": "^1.1.1"
   }
 }
