@@ -1,0 +1,152 @@
+[
+  {
+    "id": "zdvp",
+    "officialTitle": "Закон за движението по пътищата",
+    "shortTitle": "ЗДвП",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "law",
+    "officialSource": "ДАБДП / ИААА",
+    "officialUrl": "https://www.sars.gov.bg/download/закон-за-движение-по-пътищата/",
+    "lastOfficialUpdateObserved": "2026-02-17",
+    "active": true
+  },
+  {
+    "id": "ppzdvp",
+    "officialTitle": "Правилник за прилагане на Закона за движението по пътищата",
+    "shortTitle": "ППЗДвП",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "regulation",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/download/правилник-за-прилагане-на-закона-за-дв/",
+    "active": true
+  },
+  {
+    "id": "nar37",
+    "officialTitle": "Наредба № 37 от 2.08.2002 г. за условията и реда за обучение на кандидатите за придобиване на правоспособност за управление на моторно превозно средство и условията и реда за издаване на разрешение за тяхното обучение",
+    "shortTitle": "Наредба № 37",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ИААА",
+    "officialUrl": "https://www.rta.government.bg/upload/642/n37.pdf",
+    "lastKnownAmendment": "ДВ, бр. 77 от 10.09.2024 г., в сила от 12.12.2024 г.",
+    "active": true
+  },
+  {
+    "id": "nar38",
+    "officialTitle": "Наредба № 38 от 16.04.2004 г. за условията и реда за провеждането на изпитите на кандидати за придобиване на правоспособност за управление на моторно превозно средство и реда за провеждане на проверочните изпити",
+    "shortTitle": "Наредба № 38",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ИААА",
+    "officialUrl": "https://rta.government.bg/upload/13049/n38.pdf",
+    "lastKnownAmendment": "ДВ, бр. 77 от 10.09.2024 г., в сила от 12.12.2024 г.",
+    "active": true
+  },
+  {
+    "id": "road_signs",
+    "officialTitle": "Наредба № РД-02-21-1 от 23 ноември 2023 г. за сигнализация на пътищата с пътни знаци",
+    "shortTitle": "Наредба за пътните знаци",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/wp-content/uploads/2024/07/НАРЕДБА-№-РД-02-21-1-ОТ-23-НОЕМВРИ-2023-Г.-ЗА-СИГНАЛИЗАЦИЯ-НА-ПЪТИЩАТА-С-ПЪТНИ-ЗНАЦИ.pdf",
+    "effectiveFrom": "2024-08-07",
+    "active": true
+  },
+  {
+    "id": "road_marking",
+    "officialTitle": "Наредба № 2 от 17 януари 2001 г. за сигнализация на пътищата с пътна маркировка",
+    "shortTitle": "Наредба за пътната маркировка",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/download/наредба-№-2-от-17-януари-2001-г-за-сигнализация-на-пътищата-с-пътна-маркировка/",
+    "active": true
+  },
+  {
+    "id": "traffic_lights",
+    "officialTitle": "Наредба № РД-02-21-2 от 24 октомври 2024 г. за организиране на движението по пътищата с пътни светофари",
+    "shortTitle": "Наредба за пътните светофари",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/wp-content/uploads/2025/10/РД-02-21-2.pdf",
+    "effectiveFrom": "2025-05-14",
+    "active": true
+  },
+  {
+    "id": "movement_organization",
+    "officialTitle": "Наредба № РД-02-20-2 от 24 октомври 2022 г. за организиране на движението по пътищата, отворени за обществено ползване",
+    "shortTitle": "Наредба за организация на движението",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/wp-content/uploads/2024/07/НАРЕДБА-№-РД-02-20-2-ОТ-24-ОКТОМВРИ-2022-Г.-ЗА-ОРГАНИЗИРАНЕ-НА-ДВИЖЕНИЕТО-ПО-ПЪТИЩАТА-ОТВОРЕНИ-ЗА-ОБЩЕСТВЕНО-ПОЛЗВАНЕ.pdf",
+    "effectiveFrom": "2023-11-06",
+    "active": true
+  },
+  {
+    "id": "first_aid",
+    "officialTitle": "Наредба № 24 от 2 декември 2002 г. за условията и реда за обучение за оказване на първа долекарска помощ от водачи на моторни превозни средства",
+    "shortTitle": "Наредба № 24",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/bългарско-законодателство/",
+    "active": true
+  },
+  {
+    "id": "technical_inspection",
+    "officialTitle": "Наредба № Н-32 от 16 декември 2011 г. за периодичните прегледи за проверка на техническата изправност на пътните превозни средства",
+    "shortTitle": "Наредба № Н-32",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "ordinance",
+    "officialSource": "ИААА / ДАБДП",
+    "officialUrl": "https://www.sars.gov.bg/wp-content/uploads/2024/02/Наредба-Н-32.pdf",
+    "lastKnownAmendment": "ДВ, бр. 115 от 30.12.2025 г., в сила от 01.01.2026 г.",
+    "active": true
+  },
+  {
+    "id": "exam_themes",
+    "officialTitle": "Изпитни теми за кандидатите за придобиване на правоспособност за управление на МПС",
+    "shortTitle": "Официални изпитни теми",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "exam_framework",
+    "officialSource": "ИААА",
+    "officialUrl": "https://www.rta.government.bg/bg/archive_p_exam-themes-for-drivers-license",
+    "active": true
+  },
+  {
+    "id": "exam_question_bank",
+    "officialTitle": "Масив от изпитни въпроси за изготвяне на тестове за провеждане на теоретичните изпити",
+    "shortTitle": "Официален масив от изпитни въпроси",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "exam_question_bank",
+    "officialSource": "ИААА",
+    "officialUrl": "https://public-eis.rta.government.bg/exam-questions/",
+    "active": true
+  },
+  {
+    "id": "exam_methodology",
+    "officialTitle": "Методика за провеждане на изпитите за придобиване на правоспособност за управление на МПС",
+    "shortTitle": "Методика за изпитите",
+    "jurisdiction": "BG",
+    "language": "bg",
+    "type": "exam_methodology",
+    "officialSource": "ИААА",
+    "officialUrl": "https://rta.government.bg/bg/archive_c_izpit_vodachi",
+    "active": true
+  }
+]
