@@ -1,0 +1,66 @@
+[
+  {
+    "id": "sign_b1",
+    "title": "Пътен знак Б1",
+    "type": "road_sign",
+    "code": "B1",
+    "fileName": "B1.svg",
+    "storagePath": "images/road-signs/B1.svg",
+    "topicIds": [
+      "theme_04",
+      "theme_08"
+    ],
+    "active": true
+  },
+  {
+    "id": "sign_b3",
+    "title": "Пътен знак Б3",
+    "type": "road_sign",
+    "code": "B3",
+    "fileName": "B3.svg",
+    "storagePath": "images/road-signs/B3.svg",
+    "topicIds": [
+      "theme_04",
+      "theme_08"
+    ],
+    "active": true
+  },
+  {
+    "id": "sign_b5",
+    "title": "Пътен знак Б5",
+    "type": "road_sign",
+    "code": "B5",
+    "fileName": "B5.png",
+    "storagePath": "images/road-signs/B5.png",
+    "topicIds": [
+      "theme_04",
+      "theme_08"
+    ],
+    "active": true
+  },
+  {
+    "id": "sign_b6",
+    "title": "Пътен знак Б6",
+    "type": "road_sign",
+    "code": "B6",
+    "fileName": "B6.png",
+    "storagePath": "images/road-signs/B6.png",
+    "topicIds": [
+      "theme_04",
+      "theme_08"
+    ],
+    "active": true
+  },
+  {
+    "id": "parking_sidewalk_b2_5t",
+    "title": "Паркиране върху тротоар до 2,5 t",
+    "type": "traffic_situation",
+    "code": null,
+    "fileName": "parking-sidewalk-b2-5t.png",
+    "storagePath": "images/traffic-situations/parking-sidewalk-b2-5t.png",
+    "topicIds": [
+      "theme_12"
+    ],
+    "active": true
+  }
+]
