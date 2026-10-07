@@ -24,7 +24,8 @@
     "laws:visual:v5.3": "node scripts/normalize-visual-rules-v5_3.js",
     "laws:visual:v5.4": "node scripts/normalize-visual-rules-v5_4.js",
     "laws:visual:quality": "node scripts/check-visual-quality-v5_6.js",
-    "laws:build:v6": "node scripts/build-production-dataset-v6.js"
+    "laws:build:v6": "node scripts/build-production-dataset-v6.js",
+    "firebase:seed:laws:v6": "node scripts/seed-production-laws-v6.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
