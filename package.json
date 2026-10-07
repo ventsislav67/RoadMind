@@ -22,7 +22,8 @@
     "laws:format-check": "node scripts/inspect-legal-formats.js",
     "laws:normalize:v5.2": "node scripts/normalize-legal-rules-v5_2.js",
     "laws:visual:v5.3": "node scripts/normalize-visual-rules-v5_3.js",
-    "laws:visual:v5.4": "node scripts/normalize-visual-rules-v5_4.js"
+    "laws:visual:v5.4": "node scripts/normalize-visual-rules-v5_4.js",
+    "laws:visual:quality": "node scripts/check-visual-quality-v5_6.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
