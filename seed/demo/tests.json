@@ -1,0 +1,18 @@
+[
+  {
+    "id": "demo_test_001",
+    "title": "RoadMind — Демо листовка №1",
+    "category": "B",
+    "country": "BG",
+    "questionIds": [
+      "demo_q_001",
+      "demo_q_002",
+      "demo_q_003",
+      "demo_q_004",
+      "demo_q_005"
+    ],
+    "questionCount": 5,
+    "mode": "demo",
+    "active": true
+  }
+]
