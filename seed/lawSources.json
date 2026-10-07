@@ -1,0 +1,64 @@
+[
+  {
+    "id": "zdvp",
+    "title": "Закон за движението по пътищата",
+    "shortTitle": "ЗДвП",
+    "jurisdiction": "BG",
+    "sourceType": "law",
+    "officialPublisher": "Изпълнителна агенция „Автомобилна администрация“",
+    "officialUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "gazetteSearchUrl": "https://dv.parliament.bg/",
+    "status": "active",
+    "scope": [
+      "category_B",
+      "road_rules",
+      "speed",
+      "priority",
+      "manoeuvres"
+    ],
+    "verificationNote": "Базовият консолидиран текст в RTA PDF е използван за точни разпоредби; преди production release трябва да се приложат всички последващи изменения от Държавен вестник."
+  },
+  {
+    "id": "dv_zid_zdvp_2026_16",
+    "title": "Закон за изменение и допълнение на Закона за движението по пътищата",
+    "shortTitle": "ЗИДЗДвП, ДВ бр. 16/2026",
+    "jurisdiction": "BG",
+    "sourceType": "amendment",
+    "officialPublisher": "Държавен вестник",
+    "officialUrl": "https://dv.parliament.bg/DVWeb/showMaterialDV.jsp?idMat=241028",
+    "status": "active_amendment",
+    "scope": [
+      "road_law_updates",
+      "transition_rules"
+    ],
+    "verificationNote": "Официално обнародван на 10.02.2026 г.; съдържа и разпоредби с бъдеща дата на влизане в сила."
+  },
+  {
+    "id": "nar37",
+    "title": "Наредба № 37 от 2.08.2002 г. за условията и реда за обучение на кандидатите за придобиване на правоспособност за управление на моторно превозно средство и условията и реда за издаване на разрешение за тяхното обучение",
+    "shortTitle": "Наредба № 37",
+    "jurisdiction": "BG",
+    "sourceType": "ordinance",
+    "officialPublisher": "Изпълнителна агенция „Автомобилна администрация“",
+    "officialUrl": "https://rta.government.bg/bg/674",
+    "status": "active",
+    "scope": [
+      "driver_training",
+      "category_B"
+    ]
+  },
+  {
+    "id": "rta_exam_questions",
+    "title": "Изпитни въпроси за придобиване на правоспособност за управление на МПС",
+    "shortTitle": "Официален масив изпитни въпроси",
+    "jurisdiction": "BG",
+    "sourceType": "administrative_dataset",
+    "officialPublisher": "Изпълнителна агенция „Автомобилна администрация“",
+    "officialUrl": "https://rta.government.bg/bg/archive_c_izpit_vodachi",
+    "status": "official_reference",
+    "scope": [
+      "theory_exam",
+      "category_B"
+    ]
+  }
+]

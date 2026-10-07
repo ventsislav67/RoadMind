@@ -1,0 +1,110 @@
+[
+  {
+    "id": "basic_safety",
+    "name": "Основни правила за безопасност",
+    "ruleIds": [
+      "zdvp-5-1-1"
+    ]
+  },
+  {
+    "id": "vulnerable_road_users",
+    "name": "Уязвими участници",
+    "ruleIds": [
+      "zdvp-5-2-1"
+    ]
+  },
+  {
+    "id": "alcohol_drugs",
+    "name": "Алкохол и наркотични вещества",
+    "ruleIds": [
+      "zdvp-5-3-1"
+    ]
+  },
+  {
+    "id": "signals_priority",
+    "name": "Сигнали и йерархия",
+    "ruleIds": [
+      "zdvp-7-1",
+      "zdvp-7-2"
+    ]
+  },
+  {
+    "id": "speed_control",
+    "name": "Избор и контрол на скоростта",
+    "ruleIds": [
+      "zdvp-20-2"
+    ]
+  },
+  {
+    "id": "speed_limits",
+    "name": "Ограничения на скоростта",
+    "ruleIds": [
+      "zdvp-21-1-B",
+      "zdvp-21-2"
+    ]
+  },
+  {
+    "id": "following_distance",
+    "name": "Дистанция",
+    "ruleIds": [
+      "zdvp-23-1"
+    ]
+  },
+  {
+    "id": "manoeuvres",
+    "name": "Маневри",
+    "ruleIds": [
+      "zdvp-25-1"
+    ]
+  },
+  {
+    "id": "lane_change",
+    "name": "Смяна на лента",
+    "ruleIds": [
+      "zdvp-25-2"
+    ]
+  },
+  {
+    "id": "turn_signal",
+    "name": "Сигнали при маневра",
+    "ruleIds": [
+      "zdvp-26-1"
+    ]
+  },
+  {
+    "id": "right_priority",
+    "name": "Предимство отдясно",
+    "ruleIds": [
+      "zdvp-48"
+    ]
+  },
+  {
+    "id": "earth_road",
+    "name": "Излизане от земен път",
+    "ruleIds": [
+      "zdvp-49"
+    ]
+  },
+  {
+    "id": "priority_road",
+    "name": "Път с предимство",
+    "ruleIds": [
+      "zdvp-50-1"
+    ]
+  },
+  {
+    "id": "intersection_blocking",
+    "name": "Блокиране на кръстовище",
+    "ruleIds": [
+      "zdvp-50a"
+    ]
+  },
+  {
+    "id": "railway_crossing",
+    "name": "Железопътен прелез",
+    "ruleIds": [
+      "zdvp-51-2",
+      "zdvp-51-4"
+    ]
+  }
+]

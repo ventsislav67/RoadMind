@@ -1,0 +1,497 @@
+[
+  {
+    "id": "zdvp-5-1-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "basic_safety",
+    "title": "Не създавай опасност или пречки",
+    "ruleText": "Участникът в движението не трябва с поведението си да създава опасности и пречки за движението, да поставя в опасност живота и здравето на хората или да причинява имуществени вреди.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 5",
+      "paragraph": "ал. 1",
+      "point": "т. 1",
+      "gazetteAmendmentsMentionedInSource": [
+        "ДВ, бр. 20/1999 и последващи изменения"
+      ]
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "опасност",
+      "пречки",
+      "безопасност",
+      "участник"
+    ]
+  },
+  {
+    "id": "zdvp-5-2-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "vulnerable_road_users",
+    "title": "Внимание към уязвимите участници",
+    "ruleText": "Водачът е длъжен да бъде внимателен и предпазлив към уязвимите участници в движението, включително пешеходци и водачи на двуколесни пътни превозни средства.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 5",
+      "paragraph": "ал. 2",
+      "point": "т. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "пешеходци",
+      "велосипедисти",
+      "уязвими участници"
+    ]
+  },
+  {
+    "id": "zdvp-5-3-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "alcohol_drugs",
+    "title": "Алкохол и наркотични вещества",
+    "ruleText": "На водача е забранено да управлява пътно превозно средство с концентрация на алкохол в кръвта над 0,5 на хиляда и/или след употреба на наркотични вещества или техни аналози.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 5",
+      "paragraph": "ал. 3",
+      "point": "т. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "алкохол",
+      "наркотици",
+      "0.5 промила"
+    ]
+  },
+  {
+    "id": "zdvp-7-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "signals_priority",
+    "title": "Несъответствие между регулировчик и сигнали",
+    "ruleText": "При несъответствие между сигналите на регулировчика и светлинните сигнали или пътните знаци относно предимството се съобразяваш със сигналите на регулировчика.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 7",
+      "paragraph": "ал. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "регулировчик",
+      "предимство",
+      "сигнали"
+    ]
+  },
+  {
+    "id": "zdvp-7-2",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "signals_priority",
+    "title": "Светлинен сигнал срещу пътен знак",
+    "ruleText": "При несъответствие между светлинните сигнали и пътните знаци относно предимството се съобразяваш със светлинните сигнали.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 7",
+      "paragraph": "ал. 2"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "светофар",
+      "знак",
+      "предимство"
+    ]
+  },
+  {
+    "id": "zdvp-20-2",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "speed_control",
+    "title": "Скорост според условията",
+    "ruleText": "При избиране на скоростта водачът трябва да се съобразява с атмосферните условия, релефа, състоянието на пътя и превозното средство, товара, характера и интензивността на движението и видимостта, така че да може да спре пред всяко предвидимо препятствие. При опасност трябва да намали скоростта и при необходимост да спре.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 20",
+      "paragraph": "ал. 2"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "скорост",
+      "видимост",
+      "опасност",
+      "дистанция"
+    ]
+  },
+  {
+    "id": "zdvp-21-1-B",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "speed_limits",
+    "title": "Основни ограничения на скоростта за категория B",
+    "ruleText": "За категория B базовите максимални скорости са 50 km/h в населено място, 90 km/h извън населено място, 140 km/h на автомагистрала и 120 km/h на скоростен път, когато няма друго ограничение със сигнализация.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 21",
+      "paragraph": "ал. 1",
+      "point": "табличен ред „Категория B“"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true,
+      "important": "Преди production използване провери текущия консолидиран чл. 21 след измененията през 2025–2026 г."
+    },
+    "tags": [
+      "50",
+      "90",
+      "120",
+      "140",
+      "категория B"
+    ]
+  },
+  {
+    "id": "zdvp-21-2",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "speed_signs",
+    "title": "Различно ограничение със знак",
+    "ruleText": "Когато допустимата максимална скорост е различна от стойностите по общото правило, различното ограничение се сигнализира с пътен знак.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 21",
+      "paragraph": "ал. 2"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "скорост",
+      "пътен знак",
+      "ограничение"
+    ]
+  },
+  {
+    "id": "zdvp-23-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "following_distance",
+    "title": "Безопасна дистанция",
+    "ruleText": "Водачът трябва да се движи на такова разстояние от превозното средство пред него, че да може да избегне удар, когато то намали скоростта или спре рязко.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 23",
+      "paragraph": "ал. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "дистанция",
+      "спиране",
+      "удар"
+    ]
+  },
+  {
+    "id": "zdvp-25-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "manoeuvres",
+    "title": "Проверка преди маневра",
+    "ruleText": "Преди да започне маневра водачът трябва да се убеди, че няма да създаде опасност за движението след него, пред него или покрай него и да съобрази маневрата с положението, посоката и скоростта на останалите участници.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 25",
+      "paragraph": "ал. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "маневра",
+      "лента",
+      "завой",
+      "безопасност"
+    ]
+  },
+  {
+    "id": "zdvp-25-2",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "lane_change",
+    "title": "Навлизане в съседна лента",
+    "ruleText": "При маневра, свързана с навлизане изцяло или частично в съседна лента, водачът е длъжен да пропусне превозните средства, които се движат по нея. При едновременна такава маневра от две съседни ленти предимство има водачът в дясната лента.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 25",
+      "paragraph": "ал. 2"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "смяна на лента",
+      "предимство",
+      "дясна лента"
+    ]
+  },
+  {
+    "id": "zdvp-26-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "turn_signal",
+    "title": "Сигнал преди маневра",
+    "ruleText": "Преди завой или маневра, свързана с отклонение встрани, водачът трябва своевременно да подаде ясен и достатъчен за възприемане сигнал и да го поддържа през необходимото време на маневрата.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 26"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "мигач",
+      "завой",
+      "сигнал"
+    ]
+  },
+  {
+    "id": "zdvp-48",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "right_priority",
+    "title": "Предимство на дясностоящия",
+    "ruleText": "На кръстовище на равнозначни пътища водачът трябва да пропусне превозните средства, които се намират или приближават от дясната му страна. Нерелсовото превозно средство пропуска и релсовото независимо от местоположението и посоката му.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 48"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "дясностоящ",
+      "равнозначни пътища",
+      "кръстовище"
+    ]
+  },
+  {
+    "id": "zdvp-49",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "earth_road",
+    "title": "Излизане от земен път",
+    "ruleText": "Водачът, който излиза от земен път на път с настилка, пропуска движещите се по пътя с настилка превозни средства и пешеходци.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 49"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "земен път",
+      "настилка",
+      "предимство"
+    ]
+  },
+  {
+    "id": "zdvp-50-1",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "priority_road",
+    "title": "Път с предимство",
+    "ruleText": "На кръстовище, на което единият от пътищата е сигнализиран като път с предимство, водачите от другите пътища пропускат превозните средства, които се движат по пътя с предимство.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 50",
+      "paragraph": "ал. 1"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "път с предимство",
+      "кръстовище",
+      "пропускане"
+    ]
+  },
+  {
+    "id": "zdvp-50a",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "intersection_blocking",
+    "title": "Не навлизай в блокирано кръстовище",
+    "ruleText": "Забранено е навлизането в кръстовище дори при разрешаващ сигнал на светофара, ако обстановката ще принуди водача да спре в кръстовището или да възпрепятства напречното движение.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 50а"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "кръстовище",
+      "светофар",
+      "задръстване"
+    ]
+  },
+  {
+    "id": "zdvp-51-2",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "railway_crossing",
+    "title": "Скорост при железопътен прелез",
+    "ruleText": "При приближаване към железопътен прелез водачът трябва да се движи с такава скорост, че при необходимост да може да спре пред прелеза.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 51",
+      "paragraph": "ал. 2"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "железопътен прелез",
+      "скорост",
+      "спиране"
+    ]
+  },
+  {
+    "id": "zdvp-51-4",
+    "sourceId": "zdvp",
+    "categoryIds": [
+      "B"
+    ],
+    "topic": "railway_crossing",
+    "title": "Спиране пред прелез без бариери",
+    "ruleText": "Ако няма други указания с пътни знаци или маркировка, пред железопътен прелез се спира на не по-малко от 2 метра преди първата релса, а при бариери – на 1 метър от тях.",
+    "legalReference": {
+      "act": "Закон за движението по пътищата",
+      "article": "чл. 51",
+      "paragraph": "ал. 4"
+    },
+    "sourceUrl": "https://www.rta.government.bg/upload/619/zdvp.pdf",
+    "status": "active",
+    "verification": {
+      "verifiedFromOfficialSource": true,
+      "verifiedAt": "2026-10-07",
+      "needsConsolidationCheck": true
+    },
+    "tags": [
+      "2 метра",
+      "1 метър",
+      "прелез"
+    ]
+  }
+]
