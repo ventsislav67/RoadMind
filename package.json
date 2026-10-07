@@ -20,7 +20,8 @@
     "laws:normalize:v5": "node scripts/normalize-legal-rules-v5.js",
     "laws:normalize:v5.1": "node scripts/normalize-legal-rules-v5_1.js",
     "laws:format-check": "node scripts/inspect-legal-formats.js",
-    "laws:normalize:v5.2": "node scripts/normalize-legal-rules-v5_2.js"
+    "laws:normalize:v5.2": "node scripts/normalize-legal-rules-v5_2.js",
+    "laws:visual:v5.3": "node scripts/normalize-visual-rules-v5_3.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
