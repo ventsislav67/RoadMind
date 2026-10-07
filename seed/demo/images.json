@@ -4,63 +4,68 @@
     "title": "Пътен знак Б1",
     "type": "road_sign",
     "code": "B1",
-    "fileName": "B1.svg",
-    "storagePath": "images/road-signs/B1.svg",
+    "fileName": "B1.jpg",
+    "storagePath": "images/road-signs/demo/B1.jpg",
     "topicIds": [
       "theme_04",
       "theme_08"
     ],
-    "active": true
+    "active": true,
+    "visualType": "ROAD_SIGN"
   },
   {
     "id": "sign_b3",
     "title": "Пътен знак Б3",
     "type": "road_sign",
     "code": "B3",
-    "fileName": "B3.svg",
-    "storagePath": "images/road-signs/B3.svg",
+    "fileName": "B3.jpg",
+    "storagePath": "images/road-signs/demo/B3.jpg",
     "topicIds": [
       "theme_04",
       "theme_08"
     ],
-    "active": true
+    "active": true,
+    "visualType": "ROAD_SIGN"
   },
   {
     "id": "sign_b5",
     "title": "Пътен знак Б5",
     "type": "road_sign",
     "code": "B5",
-    "fileName": "B5.png",
-    "storagePath": "images/road-signs/B5.png",
+    "fileName": "B5.jpg",
+    "storagePath": "images/road-signs/demo/B5.jpg",
     "topicIds": [
       "theme_04",
       "theme_08"
     ],
-    "active": true
+    "active": true,
+    "visualType": "ROAD_SIGN"
   },
   {
     "id": "sign_b6",
     "title": "Пътен знак Б6",
     "type": "road_sign",
     "code": "B6",
-    "fileName": "B6.png",
-    "storagePath": "images/road-signs/B6.png",
+    "fileName": "B6.jpg",
+    "storagePath": "images/road-signs/demo/B6.jpg",
     "topicIds": [
       "theme_04",
       "theme_08"
     ],
-    "active": true
+    "active": true,
+    "visualType": "ROAD_SIGN"
   },
   {
     "id": "parking_sidewalk_b2_5t",
     "title": "Паркиране върху тротоар до 2,5 t",
     "type": "traffic_situation",
     "code": null,
-    "fileName": "parking-sidewalk-b2-5t.png",
-    "storagePath": "images/traffic-situations/parking-sidewalk-b2-5t.png",
+    "fileName": "parking-sidewalk-b2-5t.jpg",
+    "storagePath": "images/traffic-situations/parking-sidewalk-b2-5t.jpg",
     "topicIds": [
       "theme_12"
     ],
-    "active": true
+    "active": true,
+    "visualType": "TRAFFIC_SITUATION"
   }
 ]
