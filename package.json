@@ -12,7 +12,8 @@
     "laws:extract": "node scripts/extract-law-rules.js",
     "laws:atomic": "node scripts/split-law-rules.js",
     "laws:validate": "node scripts/validate-law-rules.js",
-    "laws:classify": "node scripts/classify-category-b.js"
+    "laws:classify": "node scripts/classify-category-b.js",
+    "laws:classify:v2": "node scripts/classify-category-b-v2.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
