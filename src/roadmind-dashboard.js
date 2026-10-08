@@ -123,14 +123,20 @@
   }
 
   function renderWeakTopics(data) {
-    const topics = Array.isArray(data.weakTopics) ? data.weakTopics : [];
+    const allTopics = Array.isArray(data.weakTopics) ? data.weakTopics : [];
+    const topics = allTopics.filter(topic => Number(topic.percentage || 0) < 100);
 
     ['weakTopicsCard', 'weakTopicsCard2'].forEach(containerId => {
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      if (!topics.length) {
+      if (!allTopics.length) {
         container.innerHTML = '<p class="muted" style="padding:12px 4px;">Няма достатъчно реални резултати по теми.</p>';
+        return;
+      }
+
+      if (!topics.length) {
+        container.innerHTML = '<p style="padding:12px 4px;font-weight:700;color:var(--lime-ink);">✅ Няма открити слаби теми в решените тестове.</p>';
         return;
       }
 
@@ -231,8 +237,8 @@
     }).join('');
   }
 
-  function drawRealProgress(data) {
-    const svg = document.getElementById('progressSvg');
+  function drawProgressInto(svgId, data, color) {
+    const svg = document.getElementById(svgId);
     if (!svg) return;
 
     const progression = Array.isArray(data.progression) ? data.progression : [];
@@ -244,16 +250,14 @@
     }
 
     const w = 560;
-    const h = 160;
+    const h = svgId === 'analysisSvg' ? 170 : 160;
     const pad = 24;
-    const min = 0;
-    const max = 100;
 
     const pts = values.map((value, index) => {
       const x = values.length === 1
         ? w / 2
         : pad + index * ((w - pad * 2) / (values.length - 1));
-      const y = h - pad - ((value - min) / (max - min)) * (h - pad * 2);
+      const y = h - pad - (value / 100) * (h - pad * 2);
       return [x, y];
     });
 
@@ -262,12 +266,17 @@
     ).join(' ');
 
     svg.innerHTML = `
-      <path d="${path}" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="${path}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
       ${pts.map((point, index) => `
-        <circle cx="${point[0]}" cy="${point[1]}" r="4.5" fill="var(--surface)" stroke="var(--blue)" stroke-width="2.5" />
+        <circle cx="${point[0]}" cy="${point[1]}" r="4.5" fill="var(--surface)" stroke="${color}" stroke-width="2.5" />
         <text x="${point[0]}" y="${Math.max(14, point[1] - 13)}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)">${values[index]}%</text>
       `).join('')}
     `;
+  }
+
+  function drawRealProgress(data) {
+    drawProgressInto('progressSvg', data, 'var(--blue)');
+    drawProgressInto('analysisSvg', data, 'var(--purple)');
   }
 
   async function refreshDashboard() {
