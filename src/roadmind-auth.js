@@ -1,9 +1,10 @@
-/* RoadMind authentication UI */
+/* RoadMind authentication + real profile UI */
 (() => {
   let currentUser = null;
   let registerState = null;
   let resetEmail = '';
   let resetToken = '';
+  let profileStats = null;
 
   const style = document.createElement('style');
   style.textContent = `
@@ -21,13 +22,21 @@
     .rm-field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent);}
     .rm-auth-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:4px;}
     .rm-auth-link{border:0;background:none;color:var(--blue);font-weight:800;font-size:13px;padding:0;cursor:pointer;}
-    .rm-auth-error{display:none;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--red) 13%,transparent);color:var(--red);font-size:13px;font-weight:700;}
+    .rm-auth-error{display:none;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--red) 13%,transparent);color:var(--red);font-size:13px;font-weight:700;margin-bottom:12px;}
     .rm-auth-error.show{display:block;}
     .rm-code-input{text-align:center;font-size:28px!important;letter-spacing:10px;font-family:var(--font-display)!important;font-weight:700!important;}
     .rm-auth-note{font-size:12px;color:var(--text-faint);line-height:1.45;}
     .rm-auth-success{padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--lime) 14%,transparent);color:var(--lime-ink);font-size:13px;font-weight:700;}
     .rm-profile-grid{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;}
-    @media(max-width:520px){.rm-auth-card{padding:22px}.rm-profile-grid{grid-template-columns:1fr;text-align:center}.rm-profile-grid .avatar{margin:auto}.rm-auth-actions{align-items:stretch;flex-direction:column}.rm-auth-actions .btn{width:100%;}}
+    .rm-profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px;}
+    .rm-profile-stat{padding:14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border);}
+    .rm-profile-stat b{display:block;font:700 21px var(--font-display);margin-bottom:2px;}
+    .rm-profile-stat span{font-size:11px;font-weight:800;color:var(--text-faint);}
+    .rm-profile-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .rm-profile-edit{display:none;margin-top:18px;padding:18px;border-radius:16px;background:var(--surface-2);border:1px solid var(--border);}
+    .rm-profile-edit.show{display:block;}
+    @media(max-width:700px){.rm-profile-stats{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:520px){.rm-auth-card{padding:22px}.rm-profile-grid{grid-template-columns:1fr;text-align:center}.rm-profile-grid .avatar{margin:auto}.rm-auth-actions{align-items:stretch;flex-direction:column}.rm-auth-actions .btn{width:100%}.rm-profile-actions{flex-direction:column}.rm-profile-actions .btn{width:100%;}}
   `;
   document.head.appendChild(style);
 
@@ -38,6 +47,13 @@
 
   function esc(value){
     return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function formatDate(iso){
+    if(!iso) return '—';
+    const date = new Date(iso);
+    if(Number.isNaN(date.getTime())) return '—';
+    return new Intl.DateTimeFormat('bg-BG', { day:'2-digit', month:'2-digit', year:'numeric' }).format(date);
   }
 
   async function api(path, options = {}){
@@ -95,6 +111,7 @@
         ${body}
       </div>
     `;
+    overlay.classList.remove('hidden');
   }
 
   function showLogin(message = ''){
@@ -112,7 +129,7 @@
     `);
 
     overlay.querySelector('#rmRegisterLink').onclick = showRegister;
-    overlay.querySelector('#rmForgotLink').onclick = showForgotEmail;
+    overlay.querySelector('#rmForgotLink').onclick = () => showForgotEmail();
     overlay.querySelector('#rmLoginForm').onsubmit = async e => {
       e.preventDefault();
       setError('');
@@ -120,10 +137,10 @@
       setBusy(button, true, 'Влизане...');
       try{
         const result = await api('/api/auth/login', {
-          method: 'POST',
-          body: JSON.stringify({
-            email: overlay.querySelector('#rmLoginEmail').value,
-            password: overlay.querySelector('#rmLoginPassword').value
+          method:'POST',
+          body:JSON.stringify({
+            email:overlay.querySelector('#rmLoginEmail').value,
+            password:overlay.querySelector('#rmLoginPassword').value
           })
         });
         completeAuth(result.user);
@@ -150,10 +167,10 @@
       setError('');
       const button = e.submitter;
       registerState = {
-        firstName: overlay.querySelector('#rmFirstName').value.trim(),
-        lastName: overlay.querySelector('#rmLastName').value.trim(),
-        email: overlay.querySelector('#rmRegisterEmail').value.trim(),
-        password: overlay.querySelector('#rmRegisterPassword').value
+        firstName:overlay.querySelector('#rmFirstName').value.trim(),
+        lastName:overlay.querySelector('#rmLastName').value.trim(),
+        email:overlay.querySelector('#rmRegisterEmail').value.trim(),
+        password:overlay.querySelector('#rmRegisterPassword').value
       };
       setBusy(button, true, 'Изпращаме код...');
       try{
@@ -205,15 +222,15 @@
     };
   }
 
-  function showForgotEmail(){
+  function showForgotEmail(prefill = ''){
     shell('Забравена парола', 'Ще изпратим 6-цифрен код на регистрирания ти имейл.', `
       <form class="rm-auth-form" id="rmForgotForm">
-        <div class="rm-field"><label>Имейл</label><input id="rmForgotEmail" type="email" autocomplete="email" required></div>
+        <div class="rm-field"><label>Имейл</label><input id="rmForgotEmail" type="email" autocomplete="email" value="${esc(prefill)}" required></div>
         <button class="btn btn-primary" type="submit">Изпрати код</button>
-        <button class="rm-auth-link" type="button" id="rmForgotBack">← Назад към вход</button>
+        <button class="rm-auth-link" type="button" id="rmForgotBack">← Назад</button>
       </form>
     `);
-    overlay.querySelector('#rmForgotBack').onclick = () => showLogin();
+    overlay.querySelector('#rmForgotBack').onclick = () => currentUser ? overlay.classList.add('hidden') : showLogin();
     overlay.querySelector('#rmForgotForm').onsubmit = async e => {
       e.preventDefault();
       const button = e.submitter;
@@ -238,7 +255,7 @@
         </div>
       </form>
     `);
-    overlay.querySelector('#rmResetBack').onclick = showForgotEmail;
+    overlay.querySelector('#rmResetBack').onclick = () => showForgotEmail(resetEmail);
     overlay.querySelector('#rmResendReset').onclick = async () => {
       try{ await api('/api/auth/password/start', { method:'POST', body:JSON.stringify({ email:resetEmail }) }); }
       catch(error){ setError(error.message); }
@@ -279,12 +296,126 @@
           method:'POST',
           body:JSON.stringify({ email:resetEmail, resetToken, newPassword:p1 })
         });
+        currentUser = null;
+        window.roadMindCurrentUser = null;
+        sessionStorage.clear();
         resetEmail = '';
         resetToken = '';
         showLogin('Паролата е сменена успешно. Влез с новата парола.');
       }catch(error){ setError(error.message); }
       finally{ setBusy(button, false); }
     };
+  }
+
+  function renderProfile(){
+    const profile = document.getElementById('view-profile');
+    if(!profile || !currentUser) return;
+
+    const user = currentUser;
+    const initials = `${(user.firstName || '')[0] || ''}${(user.lastName || '')[0] || ''}`.toUpperCase() || 'RM';
+    const stats = profileStats || {};
+
+    profile.innerHTML = `
+      <div class="section-head" style="margin-top:6px;">
+        <h2 style="font-size:24px;">Профил</h2>
+        <span class="link">RoadMind акаунт</span>
+      </div>
+
+      <div class="card" style="padding:26px;">
+        <div class="rm-profile-grid">
+          <div class="avatar">${esc(initials)}</div>
+          <div>
+            <h2 style="margin:0 0 5px;">${esc(user.firstName || '')} ${esc(user.lastName || '')}</h2>
+            <div class="muted">${esc(user.email || '')}</div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="pill pill-blue">Категория ${esc(user.category || 'B')}</span>
+              <span class="pill pill-green">✓ Потвърден имейл</span>
+              ${user.createdAt ? `<span class="pill pill-purple">От ${esc(formatDate(user.createdAt))}</span>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="rm-profile-stats">
+          <div class="rm-profile-stat"><b>${stats.readyScore ?? '—'}${stats.readyScore != null ? '%' : ''}</b><span>READY SCORE</span></div>
+          <div class="rm-profile-stat"><b>${stats.totalAttempts ?? '—'}</b><span>РЕШЕНИ ТЕСТОВЕ</span></div>
+          <div class="rm-profile-stat"><b>${stats.level ?? '—'}</b><span>LEVEL</span></div>
+          <div class="rm-profile-stat"><b>${stats.xp != null ? Number(stats.xp).toLocaleString('bg-BG') : '—'}</b><span>XP</span></div>
+        </div>
+
+        <div class="road-rule" style="margin:24px 0;"></div>
+
+        <div class="rm-profile-actions">
+          <button class="btn btn-primary" id="rmEditProfileButton">Редактирай профила</button>
+          <button class="btn btn-ghost" id="rmChangePasswordButton">Смени паролата</button>
+          <button class="btn btn-ghost" id="rmLogoutButton">Изход от профила</button>
+        </div>
+
+        <div class="rm-profile-edit" id="rmProfileEditBox">
+          <form class="rm-auth-form" id="rmProfileEditForm">
+            <div class="rm-field"><label>Име</label><input id="rmProfileFirstName" value="${esc(user.firstName || '')}" maxlength="40" required></div>
+            <div class="rm-field"><label>Фамилия</label><input id="rmProfileLastName" value="${esc(user.lastName || '')}" maxlength="40" required></div>
+            <div class="rm-auth-note">Имейлът е потвърден и не се променя от този екран.</div>
+            <div class="rm-profile-actions">
+              <button class="btn btn-primary" type="submit">Запази</button>
+              <button class="btn btn-ghost" type="button" id="rmCancelProfileEdit">Отказ</button>
+            </div>
+            <div id="rmProfileMessage" class="rm-auth-note"></div>
+          </form>
+        </div>
+      </div>
+    `;
+
+    const editBox = profile.querySelector('#rmProfileEditBox');
+    profile.querySelector('#rmEditProfileButton').onclick = () => editBox.classList.toggle('show');
+    profile.querySelector('#rmCancelProfileEdit').onclick = () => editBox.classList.remove('show');
+    profile.querySelector('#rmLogoutButton').onclick = logout;
+    profile.querySelector('#rmChangePasswordButton').onclick = async () => {
+      resetEmail = currentUser.email;
+      try{
+        await api('/api/auth/password/start', { method:'POST', body:JSON.stringify({ email:resetEmail }) });
+        showForgotCode();
+      }catch(error){
+        if(typeof toast === 'function') toast(error.message);
+      }
+    };
+
+    profile.querySelector('#rmProfileEditForm').onsubmit = async e => {
+      e.preventDefault();
+      const button = e.submitter;
+      const message = profile.querySelector('#rmProfileMessage');
+      message.textContent = '';
+      setBusy(button, true, 'Запазване...');
+      try{
+        const data = await api('/api/auth/profile', {
+          method:'POST',
+          body:JSON.stringify({
+            firstName:profile.querySelector('#rmProfileFirstName').value.trim(),
+            lastName:profile.querySelector('#rmProfileLastName').value.trim()
+          })
+        });
+        currentUser = data.user;
+        window.roadMindCurrentUser = data.user;
+        const greeting = document.querySelector('#view-dashboard .hero-greet');
+        if(greeting) greeting.textContent = `Здравей, ${data.user.firstName || data.user.displayName || 'водач'} 👋`;
+        renderProfile();
+        if(typeof toast === 'function') toast('Профилът е обновен');
+      }catch(error){
+        message.textContent = error.message;
+        message.style.color = 'var(--red)';
+      }finally{
+        setBusy(button, false);
+      }
+    };
+  }
+
+  async function loadProfileStats(){
+    if(!currentUser) return;
+    try{
+      profileStats = await api('/api/dashboard', { method:'GET', headers:{} });
+      renderProfile();
+    }catch(error){
+      console.error('Profile stats load failed:', error);
+    }
   }
 
   function applyUser(user){
@@ -294,29 +425,8 @@
     const greeting = document.querySelector('#view-dashboard .hero-greet');
     if(greeting) greeting.textContent = `Здравей, ${user.firstName || user.displayName || 'водач'} 👋`;
 
-    const profile = document.getElementById('view-profile');
-    if(profile){
-      const initials = `${(user.firstName || '')[0] || ''}${(user.lastName || '')[0] || ''}`.toUpperCase() || 'RM';
-      profile.innerHTML = `
-        <div class="section-head" style="margin-top:6px;"><h2 style="font-size:24px;">Профил</h2></div>
-        <div class="card" style="padding:26px;">
-          <div class="rm-profile-grid">
-            <div class="avatar">${esc(initials)}</div>
-            <div>
-              <h2 style="margin:0 0 5px;">${esc(user.firstName || '')} ${esc(user.lastName || '')}</h2>
-              <div class="muted">${esc(user.email || '')}</div>
-              <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-                <span class="pill pill-blue">Категория B</span>
-                <span class="pill pill-green">✓ Потвърден имейл</span>
-              </div>
-            </div>
-          </div>
-          <div class="road-rule" style="margin:24px 0;"></div>
-          <button class="btn btn-ghost" id="rmLogoutButton">Изход от профила</button>
-        </div>
-      `;
-      profile.querySelector('#rmLogoutButton').onclick = logout;
-    }
+    renderProfile();
+    loadProfileStats();
   }
 
   function completeAuth(user){
@@ -329,10 +439,10 @@
   async function logout(){
     try{ await api('/api/auth/logout', { method:'POST', body:'{}' }); }catch(_){}
     currentUser = null;
+    profileStats = null;
     window.roadMindCurrentUser = null;
     sessionStorage.clear();
     showLogin('Излезе успешно от профила.');
-    overlay.classList.remove('hidden');
   }
 
   async function bootstrap(){
@@ -341,10 +451,17 @@
       completeAuth(data.user);
     }catch(_){
       showLogin();
-      overlay.classList.remove('hidden');
     }
   }
 
+  document.addEventListener('roadmind:dashboard-ready', e => {
+    if(e.detail && currentUser){
+      profileStats = e.detail;
+      renderProfile();
+    }
+  });
+
   window.roadMindLogout = logout;
+  window.refreshRoadMindProfile = loadProfileStats;
   bootstrap();
 })();
