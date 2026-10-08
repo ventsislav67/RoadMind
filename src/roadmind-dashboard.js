@@ -1,5 +1,7 @@
-/* RoadMind real dashboard layer */
+/* RoadMind real dashboard + achievements layer */
 (() => {
+  const CACHE_KEY = 'roadmind_dashboard_cache_v3';
+
   const TOPIC_NAMES = {
     theme_01: 'Основни понятия',
     theme_02: 'Пътищата и улиците',
@@ -30,6 +32,7 @@
   ];
 
   let loadingDashboard = false;
+  let latestDashboardData = null;
 
   function esc(value) {
     return String(value ?? '').replace(/[&<>"']/g, c => ({
@@ -61,6 +64,23 @@
     }).format(date);
   }
 
+  function readCache() {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function writeCache(data) {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+    } catch (_) {}
+  }
+
   function readinessText(score, attempts) {
     if (!attempts) {
       return {
@@ -90,6 +110,48 @@
       title: 'Нужна е още подготовка',
       text: 'Продължи с кратки листовки и преговаряй темите с най-нисък резултат.'
     };
+  }
+
+  function renderLoadingState() {
+    const stats = document.querySelector('#view-dashboard .chart-wrap .chart-stats');
+    if (stats) {
+      stats.innerHTML = [
+        'РЕШЕНИ ВЪПРОСИ',
+        'ПРАВИЛНИ ОТГОВОРИ',
+        'СР. ВРЕМЕ / ВЪПРОС',
+        'ДНИ ПОРЕД'
+      ].map(label => `
+        <div class="stat-box">
+          <div class="stat-num" style="color:var(--text-faint);">—</div>
+          <div class="stat-label">${label}</div>
+        </div>
+      `).join('');
+    }
+
+    const num = document.getElementById('readyNum');
+    if (num) num.textContent = '—';
+
+    const ring = document.getElementById('readyRing');
+    if (ring) ring.style.strokeDashoffset = 402;
+
+    const verdict = document.querySelector('#view-dashboard .score-verdict');
+    const desc = document.querySelector('#view-dashboard .score-desc');
+    if (verdict) verdict.textContent = 'Зареждаме реалните ти данни…';
+    if (desc) desc.textContent = 'Статистиките се синхронизират с Firestore.';
+
+    const achGrid = document.getElementById('achGrid');
+    if (achGrid) {
+      achGrid.innerHTML = '<div class="card ach-card"><div class="ach-emoji">⏳</div><div class="ach-name">Зареждане…</div></div>';
+    }
+
+    const gami = document.querySelector('#view-achievements .gami-row');
+    if (gami) {
+      gami.innerHTML = `
+        <div class="gami-chip pill-amber">🔥 — дни</div>
+        <div class="gami-chip pill-blue">⭐ Level —</div>
+        <div class="gami-chip pill-purple">⚡ — XP</div>
+      `;
+    }
   }
 
   function renderReadyScore(data) {
@@ -251,6 +313,57 @@
     }).join('');
   }
 
+  function calculateGamification(data) {
+    const totalAttempts = Number(data.totalAttempts || 0);
+    const totalCorrect = Number(data.totalCorrectAnswers || 0);
+    const streak = Number(data.streakDays || 0);
+    const history = Array.isArray(data.history) ? data.history : [];
+
+    const xp = totalCorrect * 10 + totalAttempts * 20 + streak * 25;
+    const level = Math.max(1, Math.floor(xp / 250) + 1);
+
+    const firstDemoExam = history.some(item => item.mode === 'exam');
+    const perfectExam = history.some(item => item.mode === 'exam' && Number(item.percentage || 0) === 100);
+    const tenCorrectRun = history.some(item => Number(item.total || 0) >= 10 && Number(item.wrong || 0) === 0);
+
+    return {
+      xp,
+      level,
+      achievements: [
+        { e: '🏆', n: 'Първи тест', unlocked: totalAttempts >= 1, progress: `${Math.min(totalAttempts, 1)}/1` },
+        { e: '🎯', n: '10 правилни поред', unlocked: tenCorrectRun, progress: tenCorrectRun ? '10/10' : `${Math.min(totalCorrect, 9)}/10` },
+        { e: '🔥', n: '7-дневен streak', unlocked: streak >= 7, progress: `${Math.min(streak, 7)}/7 дни` },
+        { e: '🚗', n: 'Първи демо изпит', unlocked: firstDemoExam, progress: firstDemoExam ? 'Готово' : '0/1' },
+        { e: '📚', n: '50 листовки', unlocked: totalAttempts >= 50, progress: `${Math.min(totalAttempts, 50)}/50` },
+        { e: '🧠', n: 'AI майстор', unlocked: false, progress: 'След AI Tutor' },
+        { e: '⭐', n: 'Level 20', unlocked: level >= 20, progress: `Level ${level}/20` },
+        { e: '💯', n: '100% на изпит', unlocked: perfectExam, progress: perfectExam ? 'Готово' : '0/1' }
+      ]
+    };
+  }
+
+  function renderAchievements(data) {
+    const gami = document.querySelector('#view-achievements .gami-row');
+    const grid = document.getElementById('achGrid');
+    if (!gami || !grid) return;
+
+    const game = calculateGamification(data);
+
+    gami.innerHTML = `
+      <div class="gami-chip pill-amber">🔥 ${Number(data.streakDays || 0)} дни поред</div>
+      <div class="gami-chip pill-blue">⭐ Level ${game.level}</div>
+      <div class="gami-chip pill-purple">⚡ ${game.xp.toLocaleString('bg-BG')} XP</div>
+    `;
+
+    grid.innerHTML = game.achievements.map(a => `
+      <div class="card ach-card ${a.unlocked ? '' : 'ach-locked'}" title="${esc(a.progress)}">
+        <div class="ach-emoji">${a.e}</div>
+        <div class="ach-name">${esc(a.n)}</div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:5px;font-weight:700;">${esc(a.progress)}</div>
+      </div>
+    `).join('');
+  }
+
   function drawProgressInto(svgId, data, color) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
@@ -293,24 +406,33 @@
     drawProgressInto('analysisSvg', data, 'var(--purple)');
   }
 
+  function renderAll(data) {
+    if (!data) return;
+    latestDashboardData = data;
+    renderReadyScore(data);
+    renderMainProgressStats(data);
+    renderWeakTopics(data);
+    renderSummaryStats(data);
+    renderHistory(data);
+    renderAchievements(data);
+    drawRealProgress(data);
+  }
+
   async function refreshDashboard() {
     if (loadingDashboard) return;
     loadingDashboard = true;
 
     try {
       const response = await fetch('/api/dashboard?userId=demo_user', {
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-store'
       });
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.error || 'Dashboard API error');
 
-      renderReadyScore(data);
-      renderMainProgressStats(data);
-      renderWeakTopics(data);
-      renderSummaryStats(data);
-      renderHistory(data);
-      drawRealProgress(data);
+      writeCache(data);
+      renderAll(data);
     } catch (error) {
       console.error('Dashboard load failed:', error);
     } finally {
@@ -318,10 +440,28 @@
     }
   }
 
+  const cached = readCache();
+  if (cached) {
+    renderAll(cached);
+  } else {
+    renderLoadingState();
+  }
+
+  /* Protect the real Ready Score from the old demo animation while it finishes. */
+  const readyGuard = setInterval(() => {
+    if (latestDashboardData) renderReadyScore(latestDashboardData);
+    else {
+      const num = document.getElementById('readyNum');
+      if (num) num.textContent = '—';
+    }
+  }, 50);
+  setTimeout(() => clearInterval(readyGuard), 1700);
+
   const originalGo = go;
   go = function(name) {
     originalGo(name);
-    if (name === 'dashboard' || name === 'analysis') {
+    if (name === 'dashboard' || name === 'analysis' || name === 'achievements') {
+      if (latestDashboardData) renderAll(latestDashboardData);
       setTimeout(refreshDashboard, 0);
     }
   };
