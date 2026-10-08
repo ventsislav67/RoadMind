@@ -28,12 +28,13 @@
     "firebase:seed:laws:v6": "node scripts/seed-production-laws-v6.js",
     "firebase:upload:demo": "node scripts/upload-demo-images.js",
     "firebase:seed:demo": "node scripts/seed-demo-quiz.js",
-    "start:roadmind": "node server-demo.js"
+    "firebase:admin:v14": "node scripts/patch-firebase-admin-v14.js",
+    "start:roadmind": "node scripts/patch-firebase-admin-v14.js && node server-demo.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "firebase-admin": "^13.5.0",
-    "nodemailer": "^7.0.6",
+    "firebase-admin": "^14.5.0",
+    "nodemailer": "^10.0.16",
     "pdf-parse": "^1.1.1"
   }
 }
