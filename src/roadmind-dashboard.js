@@ -1,4 +1,4 @@
-/* RoadMind real dashboard layer — reads aggregated stats from Firestore through the local API */
+/* RoadMind real dashboard layer */
 (() => {
   const TOPIC_NAMES = {
     theme_01: 'Основни понятия',
@@ -29,7 +29,6 @@
     'var(--blue)'
   ];
 
-  let lastDashboard = null;
   let loadingDashboard = false;
 
   function esc(value) {
@@ -50,7 +49,6 @@
 
   function formatDate(iso) {
     if (!iso) return '—';
-
     const date = new Date(iso);
     if (Number.isNaN(date.getTime())) return '—';
 
@@ -70,28 +68,24 @@
         text: 'Ready Score ще се изчислява от реалните ти резултати.'
       };
     }
-
     if (score >= 90) {
       return {
         title: 'Много висока готовност',
         text: 'Поддържаш отлични резултати. Продължи с пълни тестове и преговор на грешките.'
       };
     }
-
     if (score >= 75) {
       return {
         title: 'Добра готовност',
         text: 'Резултатите са стабилни. Фокусирай се върху най-слабите теми преди изпита.'
       };
     }
-
     if (score >= 60) {
       return {
         title: 'Напредваш добре',
         text: 'Има добра основа, но още са нужни упражнения по слабите теми.'
       };
     }
-
     return {
       title: 'Нужна е още подготовка',
       text: 'Продължи с кратки листовки и преговаряй темите с най-нисък резултат.'
@@ -107,10 +101,8 @@
 
     if (ring) {
       const circumference = 402;
-      const offset = circumference - (score / 100) * circumference;
-      ring.style.strokeDashoffset = offset;
+      ring.style.strokeDashoffset = circumference - (score / 100) * circumference;
     }
-
     if (num) num.textContent = score + '%';
 
     const copy = readinessText(score, Number(data.totalAttempts || 0));
@@ -120,6 +112,30 @@
         ? ` Ready Score е средният резултат от последните ${Math.min(10, data.totalAttempts)} теста.`
         : '');
     }
+  }
+
+  function renderMainProgressStats(data) {
+    const container = document.querySelector('#view-dashboard .chart-wrap .chart-stats');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="stat-box">
+        <div class="stat-num">${Number(data.totalAnsweredQuestions || 0)}</div>
+        <div class="stat-label">РЕШЕНИ ВЪПРОСИ</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${Number(data.overallAccuracy || 0)}%</div>
+        <div class="stat-label">ПРАВИЛНИ ОТГОВОРИ</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${formatSeconds(data.averageAnswerTimeMs)}</div>
+        <div class="stat-label">СР. ВРЕМЕ / ВЪПРОС</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">🔥 ${Number(data.streakDays || 0)}</div>
+        <div class="stat-label">ДНИ ПОРЕД</div>
+      </div>
+    `;
   }
 
   function renderWeakTopics(data) {
@@ -212,7 +228,6 @@
     if (!container) return;
 
     const history = Array.isArray(data.history) ? data.history : [];
-
     if (!history.length) {
       container.innerHTML = '<p class="muted" style="padding:12px 4px;">Все още няма записани тестове.</p>';
       return;
@@ -220,7 +235,6 @@
 
     container.innerHTML = history.map(item => {
       const passed = Number(item.percentage || 0) >= 70;
-
       return `
         <div class="topic-row" style="align-items:center;">
           <div style="min-width:0;flex:1;">
@@ -253,7 +267,7 @@
     const h = svgId === 'analysisSvg' ? 170 : 160;
     const pad = 24;
 
-    const pts = values.map((value, index) => {
+    const points = values.map((value, index) => {
       const x = values.length === 1
         ? w / 2
         : pad + index * ((w - pad * 2) / (values.length - 1));
@@ -261,13 +275,13 @@
       return [x, y];
     });
 
-    const path = pts.map((point, index) =>
+    const path = points.map((point, index) =>
       (index === 0 ? 'M' : 'L') + point[0] + ',' + point[1]
     ).join(' ');
 
     svg.innerHTML = `
       <path d="${path}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-      ${pts.map((point, index) => `
+      ${points.map((point, index) => `
         <circle cx="${point[0]}" cy="${point[1]}" r="4.5" fill="var(--surface)" stroke="${color}" stroke-width="2.5" />
         <text x="${point[0]}" y="${Math.max(14, point[1] - 13)}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)">${values[index]}%</text>
       `).join('')}
@@ -287,15 +301,12 @@
       const response = await fetch('/api/dashboard?userId=demo_user', {
         headers: { 'Accept': 'application/json' }
       });
-
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Dashboard API error');
-      }
+      if (!response.ok) throw new Error(data.error || 'Dashboard API error');
 
-      lastDashboard = data;
       renderReadyScore(data);
+      renderMainProgressStats(data);
       renderWeakTopics(data);
       renderSummaryStats(data);
       renderHistory(data);
@@ -316,7 +327,6 @@
   };
 
   window.refreshRoadMindDashboard = refreshDashboard;
-
   document.addEventListener('DOMContentLoaded', refreshDashboard);
   setTimeout(refreshDashboard, 0);
 })();
