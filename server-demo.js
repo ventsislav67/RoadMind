@@ -47,18 +47,20 @@ admin.initializeApp({
     storageBucket: bucketName
 });
 
-const db =
-    admin.firestore();
+const db = admin.firestore();
+const bucket = admin.storage().bucket();
 
-const bucket =
-    admin.storage().bucket();
+const indexPath = path.join(
+    __dirname,
+    "src",
+    "index.html"
+);
 
-const indexPath =
-    path.join(
-        __dirname,
-        "src",
-        "index.html"
-    );
+const resultScriptPath = path.join(
+    __dirname,
+    "src",
+    "roadmind-results.js"
+);
 
 if(!fs.existsSync(indexPath)){
     throw new Error(
@@ -66,42 +68,28 @@ if(!fs.existsSync(indexPath)){
     );
 }
 
-function sendJson(
-    res,
-    status,
-    data
-){
-    const body =
-        JSON.stringify(data);
-
-    res.writeHead(
-        status,
-        {
-            "Content-Type":
-                "application/json; charset=utf-8",
-            "Cache-Control":
-                "no-store"
-        }
+if(!fs.existsSync(resultScriptPath)){
+    throw new Error(
+        "Липсва src/roadmind-results.js"
     );
+}
+
+function sendJson(res, status, data){
+    const body = JSON.stringify(data);
+
+    res.writeHead(status, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store"
+    });
 
     res.end(body);
 }
 
-function sendText(
-    res,
-    status,
-    body,
-    contentType
-){
-    res.writeHead(
-        status,
-        {
-            "Content-Type":
-                contentType,
-            "Cache-Control":
-                "no-store"
-        }
-    );
+function sendText(res, status, body, contentType){
+    res.writeHead(status, {
+        "Content-Type": contentType,
+        "Cache-Control": "no-store"
+    });
 
     res.end(body);
 }
@@ -110,25 +98,57 @@ function isSafeId(value){
     return /^[a-zA-Z0-9_-]+$/.test(value);
 }
 
-async function loadDemoTest(){
-    const testRef =
-        db
-            .collection("tests")
-            .doc("demo_test_001");
+async function readJsonBody(req){
+    return new Promise((resolve, reject) => {
+        let body = "";
+        let size = 0;
 
-    const testSnap =
-        await testRef.get();
+        req.on("data", chunk => {
+            size += chunk.length;
+
+            if(size > 100000){
+                reject(new Error("Request body is too large."));
+                req.destroy();
+                return;
+            }
+
+            body += chunk.toString("utf8");
+        });
+
+        req.on("end", () => {
+            try{
+                resolve(body ? JSON.parse(body) : {});
+            }catch(error){
+                reject(new Error("Невалиден JSON body."));
+            }
+        });
+
+        req.on("error", reject);
+    });
+}
+
+async function loadTestById(testId){
+    const testSnap = await db
+        .collection("tests")
+        .doc(String(testId))
+        .get();
 
     if(!testSnap.exists){
         throw new Error(
-            "tests/demo_test_001 не съществува."
+            "Тестът не съществува: " + testId
         );
     }
 
-    const test = {
+    return {
         id: testSnap.id,
         ...testSnap.data()
     };
+}
+
+async function loadDemoTest(){
+    const test = await loadTestById(
+        "demo_test_001"
+    );
 
     const questionIds =
         Array.isArray(test.questionIds)
@@ -141,25 +161,17 @@ async function loadDemoTest(){
         );
     }
 
-    const refs =
-        questionIds.map(id =>
-            db
-                .collection("questions")
-                .doc(String(id))
-        );
+    const refs = questionIds.map(id =>
+        db
+            .collection("questions")
+            .doc(String(id))
+    );
 
-    const snapshots =
-        await db.getAll(...refs);
-
+    const snapshots = await db.getAll(...refs);
     const questions = [];
 
-    for(
-        let i = 0;
-        i < snapshots.length;
-        i++
-    ){
-        const snap =
-            snapshots[i];
+    for(let i = 0; i < snapshots.length; i++){
+        const snap = snapshots[i];
 
         if(!snap.exists){
             throw new Error(
@@ -180,10 +192,7 @@ async function loadDemoTest(){
     };
 }
 
-async function loadImage(
-    res,
-    imageId
-){
+async function loadImage(res, imageId){
     if(!isSafeId(imageId)){
         sendText(
             res,
@@ -194,11 +203,10 @@ async function loadImage(
         return;
     }
 
-    const imageSnap =
-        await db
-            .collection("images")
-            .doc(imageId)
-            .get();
+    const imageSnap = await db
+        .collection("images")
+        .doc(imageId)
+        .get();
 
     if(!imageSnap.exists){
         sendText(
@@ -210,8 +218,7 @@ async function loadImage(
         return;
     }
 
-    const image =
-        imageSnap.data();
+    const image = imageSnap.data();
 
     if(!image.storagePath){
         sendText(
@@ -223,13 +230,11 @@ async function loadImage(
         return;
     }
 
-    const file =
-        bucket.file(
-            image.storagePath
-        );
+    const file = bucket.file(
+        image.storagePath
+    );
 
-    const [exists] =
-        await file.exists();
+    const [exists] = await file.exists();
 
     if(!exists){
         sendText(
@@ -241,15 +246,11 @@ async function loadImage(
         return;
     }
 
-    const [buffer] =
-        await file.download();
+    const [buffer] = await file.download();
 
-    const extension =
-        path
-            .extname(
-                image.storagePath
-            )
-            .toLowerCase();
+    const extension = path
+        .extname(image.storagePath)
+        .toLowerCase();
 
     const contentTypes = {
         ".jpg": "image/jpeg",
@@ -263,167 +264,395 @@ async function loadImage(
         contentTypes[extension] ||
         "application/octet-stream";
 
-    res.writeHead(
-        200,
-        {
-            "Content-Type":
-                contentType,
-            "Cache-Control":
-                "public, max-age=3600",
-            "Content-Length":
-                buffer.length
-        }
-    );
+    res.writeHead(200, {
+        "Content-Type": contentType,
+        "Cache-Control": "public, max-age=3600",
+        "Content-Length": buffer.length
+    });
 
     res.end(buffer);
 }
 
-const server =
-    http.createServer(
-        async (req, res) => {
-            try{
-                const url =
-                    new URL(
-                        req.url,
-                        "http://" +
-                        (req.headers.host ||
-                            "localhost")
-                    );
+function clampTimeMs(value){
+    const n = Number(value);
 
-                if(
-                    req.method === "GET" &&
-                    url.pathname === "/api/health"
-                ){
-                    sendJson(
-                        res,
-                        200,
-                        {
-                            ok: true,
-                            service: "RoadMind",
-                            firestore: true
-                        }
-                    );
+    if(!Number.isFinite(n) || n < 0){
+        return 0;
+    }
 
-                    return;
-                }
+    return Math.min(
+        Math.round(n),
+        30 * 60 * 1000
+    );
+}
 
-                if(
-                    req.method === "GET" &&
-                    url.pathname === "/api/demo-test"
-                ){
-                    const data =
-                        await loadDemoTest();
+async function saveResult(payload){
+    const testId = String(
+        payload.testId || "demo_test_001"
+    );
 
-                    sendJson(
-                        res,
-                        200,
-                        data
-                    );
+    const test = await loadTestById(testId);
+    const allowedQuestionIds = new Set(
+        Array.isArray(test.questionIds)
+            ? test.questionIds.map(String)
+            : []
+    );
 
-                    return;
-                }
+    const submittedAnswers =
+        Array.isArray(payload.answers)
+            ? payload.answers
+            : [];
 
-                if(
-                    req.method === "GET" &&
-                    url.pathname.startsWith(
-                        "/api/images/"
-                    )
-                ){
-                    const imageId =
-                        decodeURIComponent(
-                            url.pathname.substring(
-                                "/api/images/"
-                                    .length
-                            )
-                        );
+    if(submittedAnswers.length === 0){
+        throw new Error(
+            "Липсват отговори за запис."
+        );
+    }
 
-                    await loadImage(
-                        res,
-                        imageId
-                    );
+    const safeAnswers = submittedAnswers
+        .filter(answer =>
+            answer &&
+            allowedQuestionIds.has(
+                String(answer.questionId)
+            )
+        )
+        .map(answer => ({
+            questionId:
+                String(answer.questionId),
+            selectedAnswer:
+                Number(answer.selectedAnswer),
+            timeMs:
+                clampTimeMs(answer.timeMs)
+        }));
 
-                    return;
-                }
+    if(safeAnswers.length === 0){
+        throw new Error(
+            "Няма валидни отговори за този тест."
+        );
+    }
 
-                if(
-                    req.method === "GET" &&
-                    (
-                        url.pathname === "/" ||
-                        url.pathname === "/index.html"
-                    )
-                ){
-                    const html =
-                        fs.readFileSync(
-                            indexPath,
-                            "utf8"
-                        );
+    const refs = safeAnswers.map(answer =>
+        db
+            .collection("questions")
+            .doc(answer.questionId)
+    );
 
-                    sendText(
-                        res,
-                        200,
-                        html,
-                        "text/html; charset=utf-8"
-                    );
+    const snapshots = await db.getAll(...refs);
 
-                    return;
-                }
+    const answerResults = [];
+    const topicResults = {};
+    let correct = 0;
+    let answeredTimeMs = 0;
 
-                sendText(
-                    res,
-                    404,
-                    "Not found",
-                    "text/plain; charset=utf-8"
-                );
-            }catch(error){
-                console.error(
-                    "Request error:",
-                    error
-                );
+    for(let i = 0; i < snapshots.length; i++){
+        const snap = snapshots[i];
+        const submitted = safeAnswers[i];
+
+        if(!snap.exists){
+            throw new Error(
+                "Липсва question: " +
+                submitted.questionId
+            );
+        }
+
+        const question = snap.data();
+        const correctAnswer =
+            Number(question.correctAnswer);
+
+        const isCorrect =
+            submitted.selectedAnswer ===
+            correctAnswer;
+
+        if(isCorrect){
+            correct++;
+        }
+
+        answeredTimeMs +=
+            submitted.timeMs;
+
+        const topicIds =
+            Array.isArray(question.topicIds)
+                ? question.topicIds.map(String)
+                : [];
+
+        for(const topicId of topicIds){
+            if(!topicResults[topicId]){
+                topicResults[topicId] = {
+                    correct: 0,
+                    wrong: 0,
+                    total: 0,
+                    percentage: 0
+                };
+            }
+
+            topicResults[topicId].total++;
+
+            if(isCorrect){
+                topicResults[topicId].correct++;
+            }else{
+                topicResults[topicId].wrong++;
+            }
+        }
+
+        answerResults.push({
+            questionId:
+                submitted.questionId,
+            selectedAnswer:
+                submitted.selectedAnswer,
+            correctAnswer,
+            isCorrect,
+            timeMs:
+                submitted.timeMs,
+            topicIds,
+            lawRuleIds:
+                Array.isArray(question.lawRuleIds)
+                    ? question.lawRuleIds
+                    : []
+        });
+    }
+
+    for(const value of Object.values(topicResults)){
+        value.percentage =
+            value.total
+                ? Math.round(
+                    (value.correct /
+                        value.total) *
+                    100
+                )
+                : 0;
+    }
+
+    const total = answerResults.length;
+    const wrong = total - correct;
+    const percentage = total
+        ? Math.round((correct / total) * 100)
+        : 0;
+
+    const averageTimeMs = total
+        ? Math.round(answeredTimeMs / total)
+        : 0;
+
+    const durationMs = clampTimeMs(
+        payload.durationMs
+    );
+
+    const resultData = {
+        userId: "demo_user",
+        testId,
+        testTitle:
+            test.title || null,
+        mode:
+            String(payload.mode || "demo"),
+        category:
+            test.category || "B",
+        score: correct,
+        correct,
+        wrong,
+        total,
+        percentage,
+        durationMs,
+        averageTimeMs,
+        topicResults,
+        answers: answerResults,
+        createdAt:
+            admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    const resultRef = await db
+        .collection("results")
+        .add(resultData);
+
+    return {
+        id: resultRef.id,
+        userId: "demo_user",
+        testId,
+        testTitle:
+            test.title || null,
+        mode:
+            String(payload.mode || "demo"),
+        category:
+            test.category || "B",
+        score: correct,
+        correct,
+        wrong,
+        total,
+        percentage,
+        durationMs,
+        averageTimeMs,
+        topicResults,
+        answers: answerResults
+    };
+}
+
+const server = http.createServer(
+    async (req, res) => {
+        try{
+            const url = new URL(
+                req.url,
+                "http://" +
+                    (req.headers.host ||
+                        "localhost")
+            );
+
+            if(
+                req.method === "GET" &&
+                url.pathname === "/api/health"
+            ){
+                sendJson(res, 200, {
+                    ok: true,
+                    service: "RoadMind",
+                    firestore: true
+                });
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                url.pathname === "/api/demo-test"
+            ){
+                const data =
+                    await loadDemoTest();
 
                 sendJson(
                     res,
-                    500,
-                    {
-                        ok: false,
-                        error:
-                            error.message ||
-                            "Internal server error"
-                    }
+                    200,
+                    data
                 );
+                return;
             }
-        }
-    );
 
-server.listen(
-    PORT,
-    () => {
-        console.log("");
-        console.log(
-            "================================="
-        );
-        console.log(
-            "RoadMind REAL DEMO"
-        );
-        console.log(
-            "================================="
-        );
-        console.log(
-            "http://localhost:" +
-            PORT
-        );
-        console.log("");
-        console.log(
-            "GET /api/health"
-        );
-        console.log(
-            "GET /api/demo-test"
-        );
-        console.log(
-            "GET /api/images/:imageId"
-        );
-        console.log("");
+            if(
+                req.method === "POST" &&
+                url.pathname === "/api/results"
+            ){
+                const payload =
+                    await readJsonBody(req);
+
+                const result =
+                    await saveResult(payload);
+
+                sendJson(res, 201, {
+                    ok: true,
+                    result
+                });
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                url.pathname.startsWith(
+                    "/api/images/"
+                )
+            ){
+                const imageId =
+                    decodeURIComponent(
+                        url.pathname.substring(
+                            "/api/images/".length
+                        )
+                    );
+
+                await loadImage(
+                    res,
+                    imageId
+                );
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                url.pathname === "/roadmind-results.js"
+            ){
+                const script = fs.readFileSync(
+                    resultScriptPath,
+                    "utf8"
+                );
+
+                sendText(
+                    res,
+                    200,
+                    script,
+                    "application/javascript; charset=utf-8"
+                );
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                (
+                    url.pathname === "/" ||
+                    url.pathname === "/index.html"
+                )
+            ){
+                let html = fs.readFileSync(
+                    indexPath,
+                    "utf8"
+                );
+
+                html = html.replace(
+                    "</body>",
+                    '<script src="/roadmind-results.js"></script>\n</body>'
+                );
+
+                sendText(
+                    res,
+                    200,
+                    html,
+                    "text/html; charset=utf-8"
+                );
+                return;
+            }
+
+            sendText(
+                res,
+                404,
+                "Not found",
+                "text/plain; charset=utf-8"
+            );
+        }catch(error){
+            console.error(
+                "Request error:",
+                error
+            );
+
+            sendJson(res, 500, {
+                ok: false,
+                error:
+                    error.message ||
+                    "Internal server error"
+            });
+        }
     }
 );
+
+server.listen(PORT, () => {
+    console.log("");
+    console.log(
+        "================================="
+    );
+    console.log(
+        "RoadMind REAL DEMO"
+    );
+    console.log(
+        "================================="
+    );
+    console.log(
+        "http://localhost:" + PORT
+    );
+    console.log("");
+    console.log(
+        "GET  /api/health"
+    );
+    console.log(
+        "GET  /api/demo-test"
+    );
+    console.log(
+        "GET  /api/images/:imageId"
+    );
+    console.log(
+        "POST /api/results"
+    );
+    console.log("");
+});
 
 async function shutdown(){
     try{
