@@ -28,8 +28,7 @@
     "firebase:seed:laws:v6": "node scripts/seed-production-laws-v6.js",
     "firebase:upload:demo": "node scripts/upload-demo-images.js",
     "firebase:seed:demo": "node scripts/seed-demo-quiz.js",
-    "firebase:admin:v14": "node scripts/patch-firebase-admin-v14.js",
-    "start:roadmind": "node scripts/patch-firebase-admin-v14.js && node server-demo.js"
+    "start:roadmind": "node server-roadmind.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
