@@ -7,16 +7,11 @@ const admin = require("firebase-admin");
 
 const PORT = Number(process.env.PORT || 3000);
 
-const serviceAccountPath =
-    process.env.FIREBASE_SERVICE_ACCOUNT;
-
-const bucketName =
-    process.env.FIREBASE_STORAGE_BUCKET;
+const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT;
+const bucketName = process.env.FIREBASE_STORAGE_BUCKET;
 
 if(!serviceAccountPath){
-    throw new Error(
-        "Липсва FIREBASE_SERVICE_ACCOUNT в .env"
-    );
+    throw new Error("Липсва FIREBASE_SERVICE_ACCOUNT в .env");
 }
 
 if(!fs.existsSync(serviceAccountPath)){
@@ -27,23 +22,15 @@ if(!fs.existsSync(serviceAccountPath)){
 }
 
 if(!bucketName){
-    throw new Error(
-        "Липсва FIREBASE_STORAGE_BUCKET в .env"
-    );
+    throw new Error("Липсва FIREBASE_STORAGE_BUCKET в .env");
 }
 
 const serviceAccount = JSON.parse(
-    fs.readFileSync(
-        serviceAccountPath,
-        "utf8"
-    )
+    fs.readFileSync(serviceAccountPath, "utf8")
 );
 
 admin.initializeApp({
-    credential:
-        admin.credential.cert(
-            serviceAccount
-        ),
+    credential: admin.credential.cert(serviceAccount),
     storageBucket: bucketName
 });
 
@@ -62,16 +49,22 @@ const resultScriptPath = path.join(
     "roadmind-results.js"
 );
 
+const dashboardScriptPath = path.join(
+    __dirname,
+    "src",
+    "roadmind-dashboard.js"
+);
+
 if(!fs.existsSync(indexPath)){
-    throw new Error(
-        "Липсва src/index.html"
-    );
+    throw new Error("Липсва src/index.html");
 }
 
 if(!fs.existsSync(resultScriptPath)){
-    throw new Error(
-        "Липсва src/roadmind-results.js"
-    );
+    throw new Error("Липсва src/roadmind-results.js");
+}
+
+if(!fs.existsSync(dashboardScriptPath)){
+    throw new Error("Липсва src/roadmind-dashboard.js");
 }
 
 function sendJson(res, status, data){
@@ -146,19 +139,14 @@ async function loadTestById(testId){
 }
 
 async function loadDemoTest(){
-    const test = await loadTestById(
-        "demo_test_001"
-    );
+    const test = await loadTestById("demo_test_001");
 
-    const questionIds =
-        Array.isArray(test.questionIds)
-            ? test.questionIds
-            : [];
+    const questionIds = Array.isArray(test.questionIds)
+        ? test.questionIds
+        : [];
 
     if(questionIds.length === 0){
-        throw new Error(
-            "Демо тестът няма questionIds."
-        );
+        throw new Error("Демо тестът няма questionIds.");
     }
 
     const refs = questionIds.map(id =>
@@ -175,8 +163,7 @@ async function loadDemoTest(){
 
         if(!snap.exists){
             throw new Error(
-                "Липсва question: " +
-                questionIds[i]
+                "Липсва question: " + questionIds[i]
             );
         }
 
@@ -230,10 +217,7 @@ async function loadImage(res, imageId){
         return;
     }
 
-    const file = bucket.file(
-        image.storagePath
-    );
-
+    const file = bucket.file(image.storagePath);
     const [exists] = await file.exists();
 
     if(!exists){
@@ -292,21 +276,19 @@ async function saveResult(payload){
     );
 
     const test = await loadTestById(testId);
+
     const allowedQuestionIds = new Set(
         Array.isArray(test.questionIds)
             ? test.questionIds.map(String)
             : []
     );
 
-    const submittedAnswers =
-        Array.isArray(payload.answers)
-            ? payload.answers
-            : [];
+    const submittedAnswers = Array.isArray(payload.answers)
+        ? payload.answers
+        : [];
 
     if(submittedAnswers.length === 0){
-        throw new Error(
-            "Липсват отговори за запис."
-        );
+        throw new Error("Липсват отговори за запис.");
     }
 
     const safeAnswers = submittedAnswers
@@ -317,12 +299,9 @@ async function saveResult(payload){
             )
         )
         .map(answer => ({
-            questionId:
-                String(answer.questionId),
-            selectedAnswer:
-                Number(answer.selectedAnswer),
-            timeMs:
-                clampTimeMs(answer.timeMs)
+            questionId: String(answer.questionId),
+            selectedAnswer: Number(answer.selectedAnswer),
+            timeMs: clampTimeMs(answer.timeMs)
         }));
 
     if(safeAnswers.length === 0){
@@ -356,24 +335,18 @@ async function saveResult(payload){
         }
 
         const question = snap.data();
-        const correctAnswer =
-            Number(question.correctAnswer);
-
-        const isCorrect =
-            submitted.selectedAnswer ===
-            correctAnswer;
+        const correctAnswer = Number(question.correctAnswer);
+        const isCorrect = submitted.selectedAnswer === correctAnswer;
 
         if(isCorrect){
             correct++;
         }
 
-        answeredTimeMs +=
-            submitted.timeMs;
+        answeredTimeMs += submitted.timeMs;
 
-        const topicIds =
-            Array.isArray(question.topicIds)
-                ? question.topicIds.map(String)
-                : [];
+        const topicIds = Array.isArray(question.topicIds)
+            ? question.topicIds.map(String)
+            : [];
 
         for(const topicId of topicIds){
             if(!topicResults[topicId]){
@@ -395,31 +368,24 @@ async function saveResult(payload){
         }
 
         answerResults.push({
-            questionId:
-                submitted.questionId,
-            selectedAnswer:
-                submitted.selectedAnswer,
+            questionId: submitted.questionId,
+            selectedAnswer: submitted.selectedAnswer,
             correctAnswer,
             isCorrect,
-            timeMs:
-                submitted.timeMs,
+            timeMs: submitted.timeMs,
             topicIds,
-            lawRuleIds:
-                Array.isArray(question.lawRuleIds)
-                    ? question.lawRuleIds
-                    : []
+            lawRuleIds: Array.isArray(question.lawRuleIds)
+                ? question.lawRuleIds
+                : []
         });
     }
 
     for(const value of Object.values(topicResults)){
-        value.percentage =
-            value.total
-                ? Math.round(
-                    (value.correct /
-                        value.total) *
-                    100
-                )
-                : 0;
+        value.percentage = value.total
+            ? Math.round(
+                (value.correct / value.total) * 100
+            )
+            : 0;
     }
 
     const total = answerResults.length;
@@ -439,12 +405,9 @@ async function saveResult(payload){
     const resultData = {
         userId: "demo_user",
         testId,
-        testTitle:
-            test.title || null,
-        mode:
-            String(payload.mode || "demo"),
-        category:
-            test.category || "B",
+        testTitle: test.title || null,
+        mode: String(payload.mode || "demo"),
+        category: test.category || "B",
         score: correct,
         correct,
         wrong,
@@ -454,8 +417,7 @@ async function saveResult(payload){
         averageTimeMs,
         topicResults,
         answers: answerResults,
-        createdAt:
-            admin.firestore.FieldValue.serverTimestamp()
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
     };
 
     const resultRef = await db
@@ -466,12 +428,9 @@ async function saveResult(payload){
         id: resultRef.id,
         userId: "demo_user",
         testId,
-        testTitle:
-            test.title || null,
-        mode:
-            String(payload.mode || "demo"),
-        category:
-            test.category || "B",
+        testTitle: test.title || null,
+        mode: String(payload.mode || "demo"),
+        category: test.category || "B",
         score: correct,
         correct,
         wrong,
@@ -484,14 +443,209 @@ async function saveResult(payload){
     };
 }
 
+function timestampToMillis(value){
+    if(!value){
+        return 0;
+    }
+
+    if(typeof value.toMillis === "function"){
+        return value.toMillis();
+    }
+
+    if(Number.isFinite(value._seconds)){
+        return value._seconds * 1000;
+    }
+
+    const date = new Date(value);
+    const ms = date.getTime();
+    return Number.isFinite(ms) ? ms : 0;
+}
+
+function timestampToIso(value){
+    const ms = timestampToMillis(value);
+    return ms ? new Date(ms).toISOString() : null;
+}
+
+async function loadUserResults(userId){
+    if(!isSafeId(userId)){
+        throw new Error("Невалиден userId.");
+    }
+
+    const snapshot = await db
+        .collection("results")
+        .where("userId", "==", userId)
+        .get();
+
+    const rows = snapshot.docs.map(doc => {
+        const data = doc.data();
+
+        return {
+            id: doc.id,
+            ...data,
+            _createdMs: timestampToMillis(data.createdAt)
+        };
+    });
+
+    rows.sort((a, b) => b._createdMs - a._createdMs);
+    return rows;
+}
+
+function buildDashboard(results){
+    const totalAttempts = results.length;
+
+    const allPercentages = results
+        .map(result => Number(result.percentage || 0))
+        .filter(Number.isFinite);
+
+    const averagePercentage = allPercentages.length
+        ? Math.round(
+            allPercentages.reduce((sum, value) => sum + value, 0) /
+            allPercentages.length
+        )
+        : 0;
+
+    const bestPercentage = allPercentages.length
+        ? Math.max(...allPercentages)
+        : 0;
+
+    const recentForReady = results.slice(0, 10);
+
+    const readyScore = recentForReady.length
+        ? Math.round(
+            recentForReady.reduce(
+                (sum, result) => sum + Number(result.percentage || 0),
+                0
+            ) / recentForReady.length
+        )
+        : 0;
+
+    const answerTimes = [];
+
+    for(const result of results){
+        const answers = Array.isArray(result.answers)
+            ? result.answers
+            : [];
+
+        for(const answer of answers){
+            const timeMs = Number(answer.timeMs || 0);
+            if(Number.isFinite(timeMs) && timeMs > 0){
+                answerTimes.push(timeMs);
+            }
+        }
+    }
+
+    const averageAnswerTimeMs = answerTimes.length
+        ? Math.round(
+            answerTimes.reduce((sum, value) => sum + value, 0) /
+            answerTimes.length
+        )
+        : 0;
+
+    const topicTotals = {};
+
+    for(const result of results){
+        const topicResults = result.topicResults &&
+            typeof result.topicResults === "object"
+                ? result.topicResults
+                : {};
+
+        for(const [topicId, value] of Object.entries(topicResults)){
+            if(!topicTotals[topicId]){
+                topicTotals[topicId] = {
+                    correct: 0,
+                    wrong: 0,
+                    total: 0,
+                    percentage: 0
+                };
+            }
+
+            topicTotals[topicId].correct += Number(value.correct || 0);
+            topicTotals[topicId].wrong += Number(value.wrong || 0);
+            topicTotals[topicId].total += Number(value.total || 0);
+        }
+    }
+
+    for(const value of Object.values(topicTotals)){
+        value.percentage = value.total
+            ? Math.round((value.correct / value.total) * 100)
+            : 0;
+    }
+
+    const weakTopics = Object.entries(topicTotals)
+        .filter(([, value]) => value.total > 0)
+        .map(([topicId, value]) => ({
+            topicId,
+            ...value
+        }))
+        .sort((a, b) => {
+            if(a.percentage !== b.percentage){
+                return a.percentage - b.percentage;
+            }
+            return b.total - a.total;
+        })
+        .slice(0, 4);
+
+    const history = results.slice(0, 5).map(result => ({
+        id: result.id,
+        testId: result.testId || null,
+        testTitle: result.testTitle || "Листовка",
+        mode: result.mode || "demo",
+        correct: Number(result.correct || 0),
+        wrong: Number(result.wrong || 0),
+        total: Number(result.total || 0),
+        percentage: Number(result.percentage || 0),
+        averageTimeMs: Number(result.averageTimeMs || 0),
+        durationMs: Number(result.durationMs || 0),
+        createdAt: timestampToIso(result.createdAt)
+    }));
+
+    const progression = results
+        .slice(0, 8)
+        .reverse()
+        .map(result => ({
+            id: result.id,
+            percentage: Number(result.percentage || 0),
+            createdAt: timestampToIso(result.createdAt)
+        }));
+
+    const latest = results[0]
+        ? {
+            id: results[0].id,
+            percentage: Number(results[0].percentage || 0),
+            correct: Number(results[0].correct || 0),
+            total: Number(results[0].total || 0),
+            createdAt: timestampToIso(results[0].createdAt)
+        }
+        : null;
+
+    return {
+        userId: "demo_user",
+        readyScore,
+        totalAttempts,
+        averagePercentage,
+        bestPercentage,
+        averageAnswerTimeMs,
+        weakTopics,
+        history,
+        progression,
+        latest
+    };
+}
+
+async function loadDashboard(userId){
+    const results = await loadUserResults(userId);
+    const dashboard = buildDashboard(results);
+    dashboard.userId = userId;
+    return dashboard;
+}
+
 const server = http.createServer(
     async (req, res) => {
         try{
             const url = new URL(
                 req.url,
                 "http://" +
-                    (req.headers.host ||
-                        "localhost")
+                    (req.headers.host || "localhost")
             );
 
             if(
@@ -510,14 +664,9 @@ const server = http.createServer(
                 req.method === "GET" &&
                 url.pathname === "/api/demo-test"
             ){
-                const data =
-                    await loadDemoTest();
+                const data = await loadDemoTest();
 
-                sendJson(
-                    res,
-                    200,
-                    data
-                );
+                sendJson(res, 200, data);
                 return;
             }
 
@@ -525,11 +674,8 @@ const server = http.createServer(
                 req.method === "POST" &&
                 url.pathname === "/api/results"
             ){
-                const payload =
-                    await readJsonBody(req);
-
-                const result =
-                    await saveResult(payload);
+                const payload = await readJsonBody(req);
+                const result = await saveResult(payload);
 
                 sendJson(res, 201, {
                     ok: true,
@@ -540,21 +686,28 @@ const server = http.createServer(
 
             if(
                 req.method === "GET" &&
-                url.pathname.startsWith(
-                    "/api/images/"
-                )
+                url.pathname === "/api/dashboard"
             ){
-                const imageId =
-                    decodeURIComponent(
-                        url.pathname.substring(
-                            "/api/images/".length
-                        )
-                    );
-
-                await loadImage(
-                    res,
-                    imageId
+                const userId = String(
+                    url.searchParams.get("userId") || "demo_user"
                 );
+
+                const dashboard = await loadDashboard(userId);
+                sendJson(res, 200, dashboard);
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                url.pathname.startsWith("/api/images/")
+            ){
+                const imageId = decodeURIComponent(
+                    url.pathname.substring(
+                        "/api/images/".length
+                    )
+                );
+
+                await loadImage(res, imageId);
                 return;
             }
 
@@ -564,6 +717,24 @@ const server = http.createServer(
             ){
                 const script = fs.readFileSync(
                     resultScriptPath,
+                    "utf8"
+                );
+
+                sendText(
+                    res,
+                    200,
+                    script,
+                    "application/javascript; charset=utf-8"
+                );
+                return;
+            }
+
+            if(
+                req.method === "GET" &&
+                url.pathname === "/roadmind-dashboard.js"
+            ){
+                const script = fs.readFileSync(
+                    dashboardScriptPath,
                     "utf8"
                 );
 
@@ -590,7 +761,9 @@ const server = http.createServer(
 
                 html = html.replace(
                     "</body>",
-                    '<script src="/roadmind-results.js"></script>\n</body>'
+                    '<script src="/roadmind-results.js"></script>\n' +
+                    '<script src="/roadmind-dashboard.js"></script>\n' +
+                    '</body>'
                 );
 
                 sendText(
@@ -626,50 +799,26 @@ const server = http.createServer(
 
 server.listen(PORT, () => {
     console.log("");
-    console.log(
-        "================================="
-    );
-    console.log(
-        "RoadMind REAL DEMO"
-    );
-    console.log(
-        "================================="
-    );
-    console.log(
-        "http://localhost:" + PORT
-    );
+    console.log("=================================");
+    console.log("RoadMind REAL DEMO");
+    console.log("=================================");
+    console.log("http://localhost:" + PORT);
     console.log("");
-    console.log(
-        "GET  /api/health"
-    );
-    console.log(
-        "GET  /api/demo-test"
-    );
-    console.log(
-        "GET  /api/images/:imageId"
-    );
-    console.log(
-        "POST /api/results"
-    );
+    console.log("GET  /api/health");
+    console.log("GET  /api/demo-test");
+    console.log("GET  /api/dashboard?userId=demo_user");
+    console.log("GET  /api/images/:imageId");
+    console.log("POST /api/results");
     console.log("");
 });
 
 async function shutdown(){
     try{
-        await admin
-            .app()
-            .delete();
+        await admin.app().delete();
     }finally{
         process.exit(0);
     }
 }
 
-process.on(
-    "SIGINT",
-    shutdown
-);
-
-process.on(
-    "SIGTERM",
-    shutdown
-);
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
