@@ -70,7 +70,7 @@ if (!server.includes('url.pathname === "/roadmind-smart-quiz.js"')) {
 
 const oldInjection = '<script src="/roadmind-auth.js"></script>\\n<script src="/roadmind-results.js"></script>\\n<script src="/roadmind-dashboard.js"></script>\\n</body>';
 const newInjection = '<script src="/roadmind-auth.js"></script>\\n<script src="/roadmind-smart-quiz.js"></script>\\n<script src="/roadmind-results.js"></script>\\n<script src="/roadmind-dashboard.js"></script>\\n</body>';
-if (!server.includes('/roadmind-smart-quiz.js</script>')) {
+if (!server.includes('<script src="/roadmind-smart-quiz.js"></script>')) {
   if (!server.includes(oldInjection)) throw new Error('Не е намерен HTML script injection block.');
   server = server.replace(oldInjection, newInjection);
   serverChanged = true;
