@@ -7,6 +7,7 @@
     "generate:images": "node scripts/generate-sign-images.js",
     "firebase:upload": "node scripts/upload-images.js",
     "firebase:seed": "node scripts/seed-firestore.js",
+    "firebase:seed:questions:v1": "node scripts/seed-question-bank-v1.js",
     "seed:laws": "node scripts/seed-laws.js",
     "laws:download": "node scripts/download-legal-sources.js",
     "laws:extract": "node scripts/extract-law-rules.js",
