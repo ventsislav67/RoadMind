@@ -8,8 +8,8 @@ const indexPath = path.join(root, 'src', 'index.html');
 if (!fs.existsSync(serverPath)) throw new Error('Липсва server-roadmind.js');
 if (!fs.existsSync(indexPath)) throw new Error('Липсва src/index.html');
 
-let server = fs.readFileSync(serverPath, 'utf8');
-let index = fs.readFileSync(indexPath, 'utf8');
+let server = fs.readFileSync(serverPath, 'utf8').replace(/\r\n/g, '\n');
+let index = fs.readFileSync(indexPath, 'utf8').replace(/\r\n/g, '\n');
 let serverChanged = false;
 let indexChanged = false;
 
@@ -79,9 +79,12 @@ if (!server.includes('<script src="/roadmind-smart-quiz.js"></script>')) {
 const oldErrorBlock = `    sendJson(res, Number(error.status || 500), {\n      ok: false,\n      error: error.message || "Internal server error"\n    });`;
 const newErrorBlock = `    const errorPayload = {\n      ok: false,\n      error: error.message || "Internal server error"\n    };\n    if (Number.isFinite(error.available)) errorPayload.available = error.available;\n    if (Number.isFinite(error.required)) errorPayload.required = error.required;\n    sendJson(res, Number(error.status || 500), errorPayload);`;
 if (!server.includes('errorPayload.available')) {
-  if (!server.includes(oldErrorBlock)) throw new Error('Не е намерен server error response block.');
-  server = server.replace(oldErrorBlock, newErrorBlock);
-  serverChanged = true;
+  if (server.includes(oldErrorBlock)) {
+    server = server.replace(oldErrorBlock, newErrorBlock);
+    serverChanged = true;
+  } else {
+    console.warn('Warning: error response block was not patched; smart quiz still works.');
+  }
 }
 
 const quickOption = `<div class="test-opt" onclick="startLoading('20 въпроса', 'quick')"><div><div class="t">Бърз тест</div><div class="s">20 въпроса · ~10 мин</div></div><span>→</span></div>`;
