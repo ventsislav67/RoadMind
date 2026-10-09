@@ -1,0 +1,82 @@
+[
+  {
+    "id": "vis_signal_hierarchy_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_04"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_signal_hierarchy_01.png",
+    "prompt": "Educational Bulgarian driving-theory illustration, clean realistic road scene at an urban intersection, a traffic police officer/regulator visibly directing traffic while a traffic light shows a conflicting signal, no brand logos, clear lanes and road markings, neutral daylight, camera from driver's eye level, designed for a multiple-choice exam question, no text labels embedded in the image, high clarity, 16:9."
+  },
+  {
+    "id": "vis_bad_weather_speed_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_06", "theme_13"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_bad_weather_speed_01.png",
+    "prompt": "Educational Bulgarian driving-theory road scene in heavy rain and reduced visibility, wet asphalt, moderate traffic ahead, realistic stopping-distance context, driver-eye perspective, clear lane markings, no readable signs or brand logos, no text in image, designed for a theory-test question about adapting speed to conditions, high clarity, 16:9."
+  },
+  {
+    "id": "vis_following_distance_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_06"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_following_distance_01.png",
+    "prompt": "Educational driving-theory illustration showing two passenger cars traveling in the same lane on a dry road with a clearly visible safe gap between them, rear car viewed from driver perspective, realistic Bulgarian/European road environment, no brand logos, no text labels, visual emphasis on following distance, daylight, high clarity, 16:9."
+  },
+  {
+    "id": "vis_lane_change_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_07"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_lane_change_01.png",
+    "prompt": "Educational Bulgarian driving-theory top-down oblique road illustration, three parallel lanes, two cars in adjacent outer lanes simultaneously moving toward the middle lane, clear lane markings and arrows showing intended movement, vehicles distinct but generic, no brand logos, no text labels, clean exam-style composition, high clarity, 16:9."
+  },
+  {
+    "id": "vis_equal_intersection_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_08"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_equal_intersection_01.png",
+    "prompt": "Educational Bulgarian driving-theory intersection diagram, four-way intersection of equal-priority roads with no traffic lights and no priority signs, three generic cars approaching from different directions, clear road geometry and lane positions, slightly elevated viewpoint, no brand logos, no text labels or letters on cars, exam-question style, high clarity, 16:9."
+  },
+  {
+    "id": "vis_earth_to_paved_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_08"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_earth_to_paved_01.png",
+    "prompt": "Educational Bulgarian driving-theory scene showing a car exiting a dirt road onto a paved two-lane road, another car traveling on the paved road and a pedestrian near the junction, realistic but clean composition, clear distinction between dirt and asphalt, no signs needed, no text labels, no brand logos, slightly elevated view, high clarity, 16:9."
+  },
+  {
+    "id": "vis_priority_road_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_04", "theme_08"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_priority_road_01.png",
+    "prompt": "Educational Bulgarian driving-theory intersection scene, one clearly identifiable main/priority road crossing a secondary road, generic passenger cars approaching from both roads, European road environment, include realistic priority-road and yield signage shapes but no text labels, no brand logos, clean exam style, slightly elevated driver-friendly view, high clarity, 16:9."
+  },
+  {
+    "id": "vis_blocked_intersection_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_08"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_blocked_intersection_01.png",
+    "prompt": "Educational Bulgarian driving-theory urban intersection with a green traffic light but congestion immediately beyond the junction, cars queued so that entering would leave a vehicle stopped inside the intersection, clear cross traffic path, realistic European road markings, no brand logos, no text labels, driver-eye perspective, high clarity, 16:9."
+  },
+  {
+    "id": "vis_railway_crossing_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_08"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_railway_crossing_01.png",
+    "prompt": "Educational Bulgarian driving-theory scene approaching a railway crossing, rails crossing the road, warning equipment and barriers visible, one passenger car approaching at a safe controllable speed, realistic European/Bulgarian road environment, no brand logos, no text labels, clear view of stopping area, daylight, high clarity, 16:9."
+  },
+  {
+    "id": "vis_vulnerable_users_01",
+    "type": "traffic_situation",
+    "topicIds": ["theme_03", "theme_15"],
+    "status": "pending_generation",
+    "storagePath": "question-images/v1/vis_vulnerable_users_01.png",
+    "prompt": "Educational Bulgarian driving-theory city street scene with a pedestrian near a crossing and a cyclist traveling close to the roadway while a car approaches cautiously, realistic proportions and European road environment, no brand logos, no text labels, designed to test awareness of vulnerable road users, daylight, high clarity, 16:9."
+  }
+]
